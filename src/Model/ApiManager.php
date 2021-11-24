@@ -16,6 +16,12 @@ class ApiManager
     }
 
 
+    /**
+     * Récupère des données depuis une source
+     *
+     * @param string $source
+     * @return array
+     */
     public function getDataFrom(string $source): array
     {
         $response = $this->client->request('GET', $source);
@@ -26,7 +32,12 @@ class ApiManager
     }
 
 
-    public function getGameCharacters()
+    /**
+     * Génère aléatoirement une réponse et des suggestions de réponses
+     *
+     * @return array
+     */
+    public function getGameCharacters(): array
     {
         $allCharacters = $this->getDataFrom("{$this->baseSource}/characters");
 
@@ -44,38 +55,4 @@ class ApiManager
             "suggestions" => $suggestions
         ];
     }
-
-
-    // public function getData(string $entity, int $limit = 0)
-    // {
-    //     $this->source = $this->baseSource;
-
-    //     $this->setSource([$entity]);
-
-    //     $allData = $this->getDataFrom($this->source);
-
-    //     if ($limit > 0) {
-    //         return array_slice($allData, 0, $limit);
-    //     }
-
-    //     return $allData;
-    // }
-
-
-    // public function getOneData(string $entity, int $id)
-    // {
-    //     $this->source = $this->baseSource;
-
-    //     $this->setSource([$entity, $id]);
-
-    //     return $this->getDataFrom($this->source);
-    // }
-
-
-    // public function setSource(array $params)
-    // {
-    //     foreach ($params as $param) {
-    //         $this->source .= "/$param";
-    //     }
-    // }
 }
