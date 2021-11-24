@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="scores">
+        <h2 class="score">Score : {{session.score}} points</h2>
+        <h2 class="question">Question : {{session.current_question}} / {{session.max_questions}}</h2>
+    </div>
+
+    <form action="/check" method="POST">
+        <input type="hidden" value="{{question.answer_hash}}" name="answer">
+
+        <div class="game">
+            <div class="img">
+                <img class="character-img" src="{{question.img}}" alt="">
+            </div>
+
+            <div class="responses">
+                {% for suggestion in question.suggestions %}
+                    <div class="reponse-bloc">
+                        <label class="form-control" for="reponse{{suggestion.char_id}}">{{suggestion.name}}</label>
+                        <input id="reponse{{suggestion.char_id}}" type="radio" name="reponse" value="{{suggestion.char_id}}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button class="btn validation" type="submit">Valider ma réponse</button>
+    </form>
+{% endblock %}
