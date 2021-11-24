@@ -6,13 +6,15 @@ use App\Model\ApiManager;
 
 class GameController extends AbstractController
 {
-    public const MAX_QUESTIONS = 5;
+    // public const MAX_QUESTIONS = 5;
 
     public function __construct()
     {
         parent::__construct();
 
         session_start();
+        $_SESSION['max_questions'] = 5;
+
         if (!isset($_SESSION['current_question'])) {
             $_SESSION['current_question'] = 1;
         }
@@ -28,16 +30,14 @@ class GameController extends AbstractController
         $data = $source->getGameCharacters();
 
         $answer = $data['answer'];
-        $hash = password_hash($answer['char_id'], PASSWORD_DEFAULT);
+        $hash = password_hash($answer->char_id, PASSWORD_DEFAULT);
         $characters = $data['characters'];
 
         return $this->twig->render('Game/index.html.twig', [
             'answer' => $answer,
             'hash' => $hash,
-            'score' => $_SESSION['score'],
-            'current_question' =>  $_SESSION['current_question'],
-            'max_questions' =>  self::MAX_QUESTIONS,
-            'characters' => $characters
+            'characters' => $characters,
+            'session' => $_SESSION
         ]);
     }
 
@@ -48,8 +48,9 @@ class GameController extends AbstractController
             $_SESSION['score']++;
         }
 
-        if (intval($_SESSION['current_question']) >= self::MAX_QUESTIONS) {
+        if (intval($_SESSION['current_question']) >= intval($_SESSION['max_questions'])) {
             header('Location:/resultat');
+            return;
         }
 
         $_SESSION['current_question']++;

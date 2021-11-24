@@ -22,7 +22,7 @@ class ApiManager
 
         $content = $response->getContent();
 
-        return $content->toArray();
+        return json_decode($content);
     }
 
 

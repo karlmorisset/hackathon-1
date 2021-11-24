@@ -7,8 +7,8 @@
     </h1>
 
     <header>
-        <h2 class="score">Score : {{score}} points</h2>
-        <h2 class="question">Question : {{current_question}} / {{max_questions}}</h2>
+        <h2 class="score">Score : {{session.score}} points</h2>
+        <h2 class="question">Question : {{session.current_question}} / {{session.max_questions}}</h2>
     </header>
 
     <form action="/check" method="POST">
