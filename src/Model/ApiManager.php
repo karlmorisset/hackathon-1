@@ -30,19 +30,18 @@ class ApiManager
     {
         $allCharacters = $this->getDataFrom("{$this->baseSource}/characters");
 
-
         $keys = array_rand($allCharacters, 4);
 
         $answer = $allCharacters[$keys[array_rand($keys)]];
-        $characters = [];
+        $suggestions = [];
 
         for ($i = 0; $i < 4; $i++) {
-            $characters[$keys[$i]] = $allCharacters[$keys[$i]];
+            $suggestions[$keys[$i]] = $allCharacters[$keys[$i]];
         }
 
         return [
             "answer" => $answer,
-            "characters" => $characters
+            "suggestions" => $suggestions
         ];
     }
 

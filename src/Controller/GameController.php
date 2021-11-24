@@ -6,8 +6,6 @@ use App\Model\ApiManager;
 
 class GameController extends AbstractController
 {
-    // public const MAX_QUESTIONS = 5;
-
     public function __construct()
     {
         parent::__construct();
@@ -24,24 +22,46 @@ class GameController extends AbstractController
         }
     }
 
-    public function index()
-    {
-        $source = new ApiManager();
-        $data = $source->getGameCharacters();
 
-        $answer = $data['answer'];
-        $hash = password_hash($answer->char_id, PASSWORD_DEFAULT);
-        $characters = $data['characters'];
+    /**
+     * Gère la création et l'affichage d'une question
+     *
+     * @return string
+     */
+    public function index(): string
+    {
+        $dataSource = new ApiManager();
 
         return $this->twig->render('Game/index.html.twig', [
-            'answer' => $answer,
-            'hash' => $hash,
-            'characters' => $characters,
+            'question' => $this->getQuestion($dataSource),
             'session' => $_SESSION
         ]);
     }
 
 
+    /**
+     * Permet de générer une question avec la réponse associée
+     *
+     * @param ApiManager $source
+     * @return array
+     */
+    public function getQuestion($source): array
+    {
+        $data = $source->getGameCharacters();
+
+        return [
+            "img" => $data['answer']->img,
+            "answer_hash" => password_hash($data['answer']->char_id, PASSWORD_DEFAULT),
+            "suggestions" => $data['suggestions']
+        ];
+    }
+
+
+    /**
+     * Permet de vérifier si une réponse est bonne
+     *
+     * @return void
+     */
     public function check()
     {
         if (password_verify($_POST['reponse'], $_POST['answer'])) {
@@ -57,7 +77,13 @@ class GameController extends AbstractController
         header("Location:/");
     }
 
-    public function resultat()
+
+    /**
+     * Permet d'afficher la page des scores obtenus
+     *
+     * @return string
+     */
+    public function resultat(): string
     {
         if (!isset($_SESSION['score'])) {
             header('Location:/');
@@ -65,7 +91,6 @@ class GameController extends AbstractController
         $msg = "Bravo vous avez obtenu : " . $_SESSION['score'] . " points";
         unset($_SESSION['score']);
         unset($_SESSION['current_question']);
-
 
         return $this->twig->render('Game/result.html.twig', ['msg' => $msg]);
     }

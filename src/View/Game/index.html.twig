@@ -12,18 +12,18 @@
     </header>
 
     <form action="/check" method="POST">
-        <input type="hidden" value="{{hash}}" name="answer">
+        <input type="hidden" value="{{question.answer_hash}}" name="answer">
 
         <div class="game">
             <div class="img">
-                <img class="character-img" src="{{answer.img}}" alt="">
+                <img class="character-img" src="{{question.img}}" alt="">
             </div>
 
             <div class="responses">
-                {% for character in characters %}
+                {% for suggestion in question.suggestions %}
                     <div class="reponse-bloc">
-                        <label class="form-control" for="reponse{{character.char_id}}">{{character.name}}</label>
-                        <input id="reponse{{character.char_id}}" type="radio" name="reponse" value="{{character.char_id}}">
+                        <label class="form-control" for="reponse{{suggestion.char_id}}">{{suggestion.name}}</label>
+                        <input id="reponse{{suggestion.char_id}}" type="radio" name="reponse" value="{{suggestion.char_id}}">
                     </div>
                 {% endfor %}
             </div>
