@@ -8,7 +8,6 @@ class ApiManager
 {
     private $client;
     private string $baseSource;
-    private string $source;
 
     public function __construct()
     {
@@ -23,7 +22,7 @@ class ApiManager
 
         $content = $response->getContent();
 
-        return $response->toArray();
+        return $content->toArray();
     }
 
 
@@ -31,11 +30,13 @@ class ApiManager
     {
         $allCharacters = $this->getDataFrom("{$this->baseSource}/characters");
 
+
         $keys = array_rand($allCharacters, 4);
 
         $answer = $allCharacters[$keys[array_rand($keys)]];
+        $characters = [];
 
-        for ($i = 0; $i < 4; $i++){
+        for ($i = 0; $i < 4; $i++) {
             $characters[$keys[$i]] = $allCharacters[$keys[$i]];
         }
 

@@ -44,13 +44,12 @@ class GameController extends AbstractController
 
     public function check()
     {
-        if(password_verify($_POST['reponse'], $_POST['answer'])) {
+        if (password_verify($_POST['reponse'], $_POST['answer'])) {
             $_SESSION['score']++;
         }
 
         if (intval($_SESSION['current_question']) >= self::MAX_QUESTIONS) {
             header('Location:/resultat');
-            exit();
         }
 
         $_SESSION['current_question']++;
@@ -62,7 +61,7 @@ class GameController extends AbstractController
         if (!isset($_SESSION['score'])) {
             header('Location:/');
         }
-        $msg = "Bravo vous avez obtenu : " . $_SESSION['score']. " points";
+        $msg = "Bravo vous avez obtenu : " . $_SESSION['score'] . " points";
         unset($_SESSION['score']);
         unset($_SESSION['current_question']);
 
